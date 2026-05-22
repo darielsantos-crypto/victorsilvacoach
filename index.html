@@ -199,28 +199,66 @@
       .container{width:min(var(--max),calc(100% - 28px))}
       .hero{padding:108px 0 46px}
       .hero h1{font-size:4.8rem}
-      .hero-card-media{height:500px}
+      .hero-card-media{height:420px}
       .programa-wrap{gap:28px}
-      .video-frame{min-height:420px}
+      .video-frame{min-height:340px}
       .footer .container{justify-content:center;text-align:center}
     }
     @media (max-width:540px){
-      .header{top:10px;width:min(calc(100% - 16px),1180px)}
+      .header{top:8px;width:min(calc(100% - 12px),1180px)}
+      .nav{padding:8px 8px 8px 10px;gap:10px}
       .hero-bg video{filter:grayscale(1) blur(2px) brightness(.42);opacity:.88}
-      .logo-mark{width:40px;height:40px}
-      .brand{gap:10px;font-size:15px}
-      .nav-cta{padding:0 14px;font-size:12px}
-      .hero h1{font-size:3.9rem}
-      .btn{width:100%}
-      .hero-card-media{height:430px}
-      .mini-kpis{grid-template-columns:1fr}
-      .impact-item{justify-content:flex-start}
+      .logo-mark{width:38px;height:38px}
+      .brand{gap:10px;font-size:14px;min-width:0}
+      .brand small{font-size:10px;letter-spacing:.16em}
+      .nav-cta{min-height:40px;padding:0 16px;font-size:12px;white-space:nowrap}
+      .hero{padding:98px 0 32px}
+      .hero-grid{gap:20px}
+      .hero-copy{max-width:100%}
+      .hero-badge{font-size:11px;padding:8px 12px}
+      .hero h1{font-size:3.15rem;line-height:.92;margin:14px 0 10px}
+      .hero p{font-size:1rem;margin-bottom:18px}
+      .hero-actions{gap:10px;margin-bottom:16px}
+      .btn{width:100%;min-height:52px}
+      .hero-notes{gap:8px}
+      .hero-notes span{font-size:12px;padding:8px 10px;flex:0 1 calc(50% - 4px);justify-content:center}
+      .hero-card{border-radius:28px}
+      .hero-card-media{height:320px}
+      .hero-card-content{left:12px;right:12px;bottom:12px;padding:16px;border-radius:22px}
+      .hero-card-content h3{font-size:22px;margin-bottom:6px}
+      .hero-card-content p{font-size:13px;margin-bottom:10px}
+      .mini-kpis{grid-template-columns:repeat(3,1fr);gap:6px}
+      .mini-kpis div{padding:10px 6px;border-radius:14px}
+      .mini-kpis b{font-size:22px}
+      .mini-kpis small{font-size:9px;letter-spacing:.1em}
+      .impact-strip{padding:14px 0}
+      .impact-item{justify-content:flex-start;align-items:flex-start;padding:6px 2px}
+      .impact-item strong{font-size:28px}
+      .section{padding:70px 0}
+      .section.tight{padding:58px 0}
+      .section-head{margin-bottom:24px}
+      .section-head h2{font-size:2.7rem}
+      .service{padding:22px}
       .service h3{font-size:34px}
-      .step{padding-left:50px}
+      .video-frame{min-height:280px;border-radius:26px}
+      .video-caption{left:12px;right:12px;bottom:12px;padding:14px}
+      .video-caption h3{font-size:26px}
+      .timeline{padding-left:16px}
+      .step{padding-left:46px;padding-bottom:24px}
       .step h4{font-size:24px}
-      .price{font-size:56px}
-      .final h2{font-size:3.6rem}
-      .float-wpp{width:58px;height:58px}
+      .step p{font-size:13px}
+      .plans{gap:16px}
+      .plan{padding:24px 20px;border-radius:26px}
+      .plan h3{font-size:34px}
+      .price{font-size:52px}
+      .price small{display:block;margin-left:0;margin-top:4px;font-size:14px}
+      .plan li{font-size:13px;padding:12px 0 12px 24px}
+      .plan .btn{min-height:50px}
+      .final .box{padding:26px 18px;border-radius:28px}
+      .final h2{font-size:3.1rem}
+      .final p{font-size:15px}
+      .socials a{width:100%}
+      .float-wpp{width:58px;height:58px;right:14px;bottom:14px}
     }
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto}
@@ -249,7 +287,7 @@
   <main id="inicio">
     <section class="hero">
       <div class="hero-bg" aria-hidden="true">
-        <video autoplay muted loop playsinline poster="assets/victor-hero.jpg">
+        <video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="assets/victor-hero.jpg">
           <source src="assets/victor-reel.mp4" type="video/mp4">
         </video>
       </div>
@@ -338,7 +376,7 @@
         </div>
         <div class="programa-wrap">
           <div class="video-frame reveal">
-                        <video autoplay muted loop playsinline poster="assets/victor-hero.jpg">
+                        <video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="assets/victor-hero.jpg">
               <source src="assets/victor-reel.mp4" type="video/mp4">
             </video>
             <div class="video-caption">
@@ -523,6 +561,32 @@
     }
     updateParallax();
     window.addEventListener('scroll', updateParallax, { passive:true });
+
+    function forceVideoAutoplay(){
+      document.querySelectorAll('video').forEach(video => {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.loop = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.setAttribute('muted', '');
+        video.setAttribute('autoplay', '');
+        video.setAttribute('loop', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        const playPromise = video.play();
+        if(playPromise && typeof playPromise.catch === 'function'){
+          playPromise.catch(() => {});
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', forceVideoAutoplay);
+    window.addEventListener('load', forceVideoAutoplay);
+    document.addEventListener('visibilitychange', () => {
+      if(!document.hidden) forceVideoAutoplay();
+    });
+    document.addEventListener('touchstart', forceVideoAutoplay, { once:true, passive:true });
   </script>
 </body>
 </html>
